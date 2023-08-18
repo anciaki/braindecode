@@ -250,7 +250,7 @@ valid_set = splitted['session_E']
 #
 
 from skorch.callbacks import LRScheduler
-from skorch.helper import predefined_split
+from skorch.helper import predefined_split, SliceDataset
 
 from braindecode import EEGClassifier
 from braindecode.training import CroppedLoss
@@ -282,9 +282,12 @@ clf = EEGClassifier(
     ],
     device=device,
 )
+
+label_set = SliceDataset(train_set, 1)
+
 # Model training for a specified number of epochs. `y` is None as it is already supplied
 # in the dataset.
-clf.fit(train_set, y=None, epochs=n_epochs)
+clf.fit(train_set, label_set, epochs=n_epochs)
 
 
 ######################################################################
